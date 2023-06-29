@@ -1,0 +1,394 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+{% load static %}
+
+{% block title %} | {{product.slug}}{% endblock %}
+
+{% block content %}
+<!-- BREADCRUMBS -->
+<section class="md:mx-16">
+     <nav class="flex my-2 px-5 md:py-3 text-gray-700 border border-gray-200 rounded-lg bg-white" aria-label="Breadcrumb">
+          <ol class="inline-flex items-center space-x-1 md:space-x-3">
+               <li class="inline-flex items-center">
+                    <a href="/" class="inline-flex items-center text-sm text-gray-700 hover:text-gray-900">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                    Home
+                    </a>
+               </li>
+               <li>
+                    <div class="flex items-center">
+                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                         <a href="/store/products/{{category_slug}}" class="ml-1 text-xs text-gray-700 hover:text-gray-900 md:ml-2 capitalize">{{ category_slug | truncatechars:26  }}</a>
+                    </div>
+               </li>
+               <li>
+                    <div class="flex items-center">
+                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                         <a href="/store/products/{{category_slug}}/{{ sub_category_slug }}" class="ml-1 text-xs text-gray-700 hover:text-gray-900 md:ml-2 capitalize">{{ sub_category_slug | truncatechars:26  }}</a>
+                    </div>
+               </li>
+               <li aria-current="page">
+                    <div class="flex items-center">
+                         <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                         <a href="/store/product/{{product.slug}}" class="ml-1 text-xs text-gray-700 hover:text-gray-900 md:ml-2 capitalize">{{ product.slug | truncatechars:26  }}</a>
+                    </div>
+               </li>
+          </ol>
+     </nav>
+
+     <div class="md:flex md:space-x-2">
+          <div class="flex flex-col md:w-3/4">
+               <!-- PRODUCT  -->
+               <div class="md:flex rounded-lg shadow-md bg-white md:py-0 py-2">
+                    
+                    <div class="md:flex md:flex-col md:w-1/3 md:py-3 md:px-4 mb-3">
+                         <!-- PRODUCT IMAGE -->
+                         <div class="mainImage">
+                              <a href="{{ product.photo_main.url }}"><img src="{{ product.photo_main.url }}"  alt="{{ product.product_name }}" class="h-80 "></a>
+                         </div>
+                         <!-- PRODUCTS IMAGE -->
+                         <div class="thumb flex flex-row  my-2 border-b md:border-0">
+                              <a href="{{ product.photo_main.url }}" target="mainImage"><img src="{{ product.photo_main.url }}" alt="Product Image" class="w-16 h-14"></a>
+                              {% for i in product_gallery %}
+                              <a href="{{i.image.url}}" target="mainImage"><img src="{{i.image.url}}" alt="Product Image" class="w-16 h-14"></a>
+                              {% endfor %}
+                         </div>
+                    </div> 
+                    
+                    <form action="{% url 'add_cart' product.id %}" id="addItem" method="POST" class="md:w-2/3 mt-2 md:mt-0 px-2 md:px-0">
+                         {% csrf_token %}
+                         <h5 class="mb-2 py-1 text-xl font-light text-gray-600">{{ product.product_name }}</h5>
+                         <p class="mb-3 font-normal text-gray-500">
+                              Brand : <span class="px-2 text-blue-500 hover:underline">{{ product.category }}</span>|<a href="/store/products/{{category_slug}}/{{sub_category_slug}}"><span class="pl-2 text-blue-500 hover:underline">Similar products from {{ product.sub_category }}</span></a>
+                         </p>
+                         <!-- RATING STARS -->
+                         <div class="rating-star">
+                              <span>
+                              <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                              <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                              <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                              <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                              <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                              <span>{{product.countReview}} reviews</span>
+                              </span>
+                         </div>
+
+                         {% if product.free_delivery %}
+                         <span class="bg-green-100 text-xs font-medium inline-flex px-2 py-0.5 rounded text-gray-600">Free Delivery</span>
+                         {% endif %}
+                         
+                         <hr class="my-4 mr-5">
+
+                         <p class="title-font font-medium text-2xl text-gray-600">KSH {{ product.price | intcomma }}</p>
+                         <span class="text-sm text-gray-600 line-through">KSH {{ product.discount_price | intcomma }}</span>
+                         <span class="text-xs bg-red-100 p-0.5 rounded">{{ product.get_discount_percentage }}%</span><p class="mt-3 text-gray-600">In Stock {{ product.stock }}</p>
+
+                         <hr class="my-4 mr-5">
+
+                         
+                         <div class="flex items-center">   
+                              
+                              <!-- COLOR DROPDOWN -->
+
+                              <div class="flex items-center">
+                                   <span class="mr-3 text-gray-600">Color</span>
+                                   <div class="relative">
+                                        <select name="color" class="form-control rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
+                                        <option value="" disabled selected>Select</option>
+                                        
+                                        {% for i in product.variation_set.colors %}
+                                        <option class="text-black" value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst }}</option>
+                                        {% endfor %}
+
+                                        </select>
+                                        <span? class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+                                             <path d="M6 9l6 6 6-6"></path>
+                                        </svg>
+                                        </span>
+                                   </div>
+                              </div>
+                              
+                              <!-- SIZE COLOR -->
+                              
+                              <div class="flex ml-6 items-center">
+                                   <span class="mr-3 text-gray-600">Size</span>
+                                   <div class="relative">
+                                        <select name="size" class="text-black rounded border appearance-none border-gray-400 py-2 focus:outline-none focus:border-red-500 text-base pl-3 pr-10">
+                                        <option value="" disabled selected>Select</option>
+                                        {% for i in product.variation_set.sizes %}
+                                        <option class="" value="{{ i.variation_value | lower }}">{{ i.variation_value | capfirst}}</option>
+                                        {% endfor %}
+                                        </select>
+                                        <span class="absolute right-0 top-0 h-full w-10 text-center text-gray-600 pointer-events-none flex items-center justify-center">
+                                        <svg fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="w-4 h-4" viewBox="0 0 24 24">
+                                             <path d="M6 9l6 6 6-6"></path>
+                                        </svg>
+                                        </span>
+                                   </div> 
+                              </div>
+                         </div> 
+
+                         {% if product.stock <= 0 %}
+                         <p class="flex ml-auto text-white bg-red-500 border-0 py-2 px-6 focus:outline-none hover:bg-red-600 rounded">Out of Stock</p>
+                         {% else %}
+                         
+                              <div id="addCartBtn" class="flex">
+                                   <button type="button" id="addCart" class="flex items-center justify-center px-2 py-2 my-4 font-medium w-full text-white capitalize transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                                        <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                        <span class="mx-1">Add to cart</span>
+                                   </button>
+                              </div>
+                              <div id="checkOut" class="flex visually-hidden">
+                                   <a href="{% url 'cart' %}" class="flex items-center justify-center px-2 py-2 my-4 font-medium w-full text-white capitalize transition-colors duration-200 transform bg-red-800 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                                             <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                        <span class="mx-1">Checkout</span>
+                                   </a>
+                              </div>
+                              
+                         {% endif %}
+                    </form>
+
+                    <form action="{% url 'addToWishList' %}" method="POST" class="h-10 md:mr-2 flex items-center justify-center mx-2 px-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-500 rounded-md hover:bg-orange-700 focus:outline-none focus:bg-orange-700">
+                              
+                         {% csrf_token %}
+                         
+                         <input type="hidden" name="product-id" value="{{ product.id }}">
+                         <input type="submit" class="mx-1" value="Save">
+                    </form>
+               </div>
+
+
+               <!-- PRODUCT REVIEW -->
+               <div  class="my-3" >
+
+                    <div class="px-4 bg-white shadow-md rounded-lg"> 
+                         
+                         <h5 id="product-details" class="mb-2 text-2xl font-light tracking-tight text-gray-900">Product Details</h5>
+                         <hr>
+                         
+                         <p class="my-2 font-normal text-gray-700">{{ product.description | safe }}</p>
+                         
+                    </div>
+               </div>
+               
+
+               <!-- PRODUCT REVIEWS -->
+               {% if orderproduct %}
+               <div class="">
+                    <div class="rounded-lg shadow-md bg-white">
+                         <div class="px-4">
+                              
+                              <h3 id="product-review" class="mb-2 text-2xl font-light tracking-tight text-gray-900">Customer Reviews</h3>
+                              <hr>
+                              <div class="rating-star my-2">
+                                   <span>
+                                        <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                        <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                        <span>{{product.countReview}} reviews</span>
+                                   </span>
+                              </div>
+                              
+                              <ol class="relative border-l border-gray-200">
+                              
+                                   <li class="ml-4 py-2">
+                                        <!-- <h3 class="text-lg font-semibold text-gray-900">{{review.user.full_name}}</h3> -->
+                                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                                        <time class="mb-1 text-sm font-normal leading-none text-gray-400">12/January/2023</time>
+                                        <div class="rating-star">
+                                             <span>
+                                                  <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}" aria-hidden="true"></i>
+                                             </span>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-gray-900">Lorem ipsum dolor sit amet consectetur adipisicing elit. Provident, inventore?</h3>
+                                        <p class="text-base font-normal text-gray-500">Lorem ipsum, dolor sit amet consectetur adipisicing elit. Laboriosam sint saepe cum expedita accusantium unde.</p>
+                                   </li>
+                              
+                              </ol>
+                              
+                         </div>
+                    </div>
+               </div>
+
+               <!-- PRODUCT REVIEWS WRITING -->
+               
+               <div class="my-2"> 
+                    <!-- REVIEWS -->
+                    <div class="rounded-lg shadow-md bg-white px-4">
+                         <h5 class="mb-2 text-2xl font-light tracking-tight text-gray-900">Write Your Review</h5>
+                         <hr>
+                         <form action="{% url 'submit_review' product.id %}" method="POST" class="my-2">
+                         {% csrf_token %}
+                         
+                              <div class="mt-2">
+                                   <!-- Rating stars -->
+                                   <label class="text-gray-900 text-md title-font font-medium mb-1">How do you rate this product?</label>
+                                   <br>
+                                   <div class="rate">
+                                        <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10" title="5"></label>
+                                        <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8" title="4"></label>
+                                        <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6" title="3"></label>
+                                        <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4" title="2"></label>
+                                        <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2" title="1"></label>
+                                        <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
+                                   </div>
+                                   <br>
+                                   <div class="text-gray-900 text-md title-font font-medium mb-1">Review Title:</div>
+                                   
+                                   <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="subject">
+                                   <br>
+                                   <div class="text-gray-900 text-md title-font font-medium mb-1">Review:</div>
+                                   
+                                   <textarea name="review" rows="4" class="flex items-center w-full px-4 py-3 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-600"></textarea>
+                                   <br>
+
+                                   {% if user.is_authenticated %}
+                                        
+                                        <input type="submit" value="Submit Review" class="my-2 rounded-md bg-indigo-500 font-semibold hover:bg-indigo-600 px-2 py-2 text-sm text-white uppercase">
+                                   {% else %}
+                                        <p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login now</a></span></p>
+                                   {% endif %}
+                              </div>
+                              <!-- MESSAGES -->
+                              <!-- {% include 'partials/_alerts.html' %} -->
+                         </form>
+                    </div>
+               </div>
+               {% endif %}
+          </div>
+          <!-- SIDE BAR -->
+          <div class="md:w-1/4 md:space-y-2" style="position: sticky;">
+
+               <div class="rounded-md shadow-md bg-white p-4">
+                    <h4 class="tracking-tight text-center text-gray-600 text-lg font-semibold capitalize">Make Your Order</h4>
+                    <hr class="mb-4">
+                    <div class="space-y-2">
+                         <div class="rounded-lg bg-white p-2 text-center bg-teal-600 hover:bg-teal-700">
+                              <a href="https://wa.me/+254720650146?text=I'm%20inquiring%20about%20the%20product%20'{{ product.product_name }}'.%20link%20to%20the%20product%20https://sipssolutions.co.ke/store/product/{{product.slug}}" target="_blank" class=" py-4 text-md font-semibold text-white"><i class="mr-2 fa-brands fa-whatsapp"></i>Whatsapp</a>
+                         </div>
+                         <!-- <div class="rounded-lg bg-white p-2 bg-blue-600 text-center hover:bg-blue-700">
+                              <a class=" py-4 text-md font-semibold text-white"><i class="mr-2 fa-brands fa-facebook"></i>Facebook</a>
+                         </div> -->
+                         <div class="rounded-lg bg-white p-2 bg-orange-600 text-center hover:bg-orange-700">
+                              <a href="tel:+254720650146" target="_blank" class=" py-4 text-md font-semibold text-white"><i class="mr-2 fa-solid fa-phone"></i>Call</a>
+                         </div>
+                    </div>
+               </div>
+
+               <div class="rounded-md shadow-md bg-white py-4 px-2 group hover:bg-gray-100">
+                    <h4 class="tracking-tight text-center text-gray-600 text-lg font-semibold capitalize">Visit Our Showroom For Offers</h4>
+                    <hr class="mb-4">
+                    <a href="https://goo.gl/maps/LH4C9k5SpQ8BLHdx9" class="relative" target="_blank">
+                         <img src="{% static 'images/Capture.PNG'%}" alt="" class="rounded-lg">
+                         <img src="{% static 'images/google.png'%}" alt="" class="top-1 absolute h-24 w-24">
+ 
+                         <h3 class="tracking-tight text-gray-600 invisible group-hover:visible absolute bottom-2 left-4" >Click To View Location</h3>
+                    </a>
+               </div>
+               <div class="md:space-y-2">
+                    <div class="rounded-md shadow-md bg-white py-4 px-2 hover:bg-gray-100">
+                         <a href="#product-details" class="py-4 text-md font-semibold text-gray-600 hover:text-gray-600"><i class="mr-2 fa-solid fa-file"></i>Products Details</a>
+                    </div>
+                    <div class="rounded-md shadow-md bg-white py-4 px-2 hover:bg-gray-100">
+                         <a href="#product-review" class="py-4 text-md font-semibold text-gray-600 hover:text-gray-600"><i class="mr-2 fa-solid fa-comment"></i>Customer Review</a>
+                    </div>
+               </div>
+
+          </div>
+     </div>
+
+     
+
+     <!-- ALSO PRODUCT VIEWED -->
+     <section class="bg-white shadow-md rounded-lg mt-4">
+          <section class="">
+               <div class="container mx-auto flex justify-between font-semibold">
+                    <div class="flex">
+                         <h3 class="border-b font-light font-mono text-2xl px-2">Customers also viewed this</h3>
+                    </div>
+               </div>
+               
+          </section>
+          
+          <section class="container mx-auto mb-5">
+          {% if related %}
+               
+               <div class="grid grid-cols-6 owl-carousel topPick bg-white rounded-b-lg shadow-md">
+               {% for related_product in related %}
+               
+                    <a href="/store/product/{{related_product.slug}}" class="flex flex-col justify-center w-full px-2 max-w-lg mx-auto hover:translate-x-0.5 hover:shadow-2xl my-3">
+                         <img src="{{ related_product.photo_main.url }}" alt="{{ related_product.product_name }}" class="w-20 h-52 rounded-md object-cover px-2"/>
+                         <p class="text-sm lg:text-md font-semibold leading-5 lg:leading-6 text-gray-900">{{ related_product.product_name | truncatechars:23 }}</p>
+                         <p class="text-sm font-semibold leading-5 lg:leading-6 text-gray-900">Ksh. {{ related_product.price | intcomma }}</p>
+                         <span class="line-through text-xs text-gray-600">KSH.{{ related_product.discount_price | intcomma }}</span>
+                    </a>
+                    <!-- <a href="/product/{{ product.slug }}"> <img class="object-cover w-full rounded-md h-36 md:h-56 xl:h-64" src="{{ product.photo_main.url }}" alt="">
+                         <p id="nm{{ product.id }}" class="mt-2 text-xs font-medium text-gray-700">{{ product.product_name | truncatechars:35 }}</p></a> -->
+               {% endfor %}
+          </div>
+
+          {% endif %}
+          </section>
+     </section>
+</section>
+
+<hr class="my-2">
+
+<script>
+     
+     document.querySelectorAll('a[href^="#"]').forEach (anchor =>{
+          anchor.addEventListener("click", function(e){
+               e.preventDefault()
+               document.querySelector(this.getAttribute("href")).scrollIntoView({
+                    behavior:"smooth"
+               })
+          })
+     })
+
+     var cartUrl = "{% url 'cart' %}"
+
+	$(document).ready(function(){
+		$('.thumb a').click(function(e){
+			e.preventDefault();
+			$('.mainImage img').attr('src', $(this).attr("href"));
+		})
+	})
+
+     $('#addCart').click(function(){
+          $.ajax({
+               url:"{% url 'add_cart' product.id %}",
+               type:'POST',
+               data:$('#addItem').serialize(),
+               success: function(response){
+                    $('#addCartBtn').addClass('visually-hidden')
+                    $('#checkOut').removeClass('visually-hidden')
+                    $('#cartCount').html(response.cart_count)
+                    
+                    Swal.fire({
+                         title: 'Message !',
+                         text: response.message,
+                         showCloseButton: true,
+                         showConfirmButton: false,
+                         footer: '<div class ="space-x-4"><a class="px-2 py-2 my-4 font-medium text-white capitalize transition-colors duration-200 transform bg-green-800 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700" href="/">Continue Shopping</a><a class="px-2 py-2 my-4 font-medium text-white capitalize transition-colors duration-200 transform bg-blue-800 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700" href="'+cartUrl+'">Proceed to Checkout?</a></div>'
+                    })
+               }
+          })
+     })
+</script>
+{% endblock %}

@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Account Overview {% endblock %}
+
+{% block content %}
+<section class="md:mx-24 py-2">
+     <div class="md:flex md:space-x-4 md:space-y-0 space-y-4">
+
+          <div class="md:w-1/4">
+               {% include 'partials/_dashboard_sidebar.html' %}
+          </div>
+
+          <div class="bg-white shadow-md rounded-lg md:w-3/4">
+              <h4 class="text-lg font-semibold px-5 py-4 uppercase">Edit Profile</h4>
+              <hr class="py-2">
+              <div class="mx-4">
+               
+                    <div class="flex flex-row-reverse my-3">
+                         <img src="{{userprofile.profile_picture.url}}" alt="Profile Picture" width="100" style="border-radius:50px;">
+                    </div>
+
+                    <form action="{% url 'edit_profile' %}" method="POST" enctype="multipart/form-data">
+                         {% csrf_token %}
+                         <div class="grid gap-6 mb-6 md:grid-cols-2">
+                              <div>
+                                   <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">First name</label>
+                                   {{user_form.first_name}}
+                              </div>
+                              <div>
+                                   <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Last name</label>
+                                   {{user_form.last_name}}
+                              </div>
+                         </div>
+                         <div class="grid gap-6 mb-6 md:grid-cols-2">
+                              <div class="mb-6">
+                                   <label for="phone" class="block mb-2 text-sm font-medium text-gray-900">Phone number</label>
+                                   {{user_form.phone_number}}
+                              </div> 
+                         </div>
+                         <div class="grid gap-6 mb-6 md:grid-cols-2">
+                              <div>
+                                   <label for="first_name" class="block mb-2 text-sm font-medium text-gray-900">County</label>
+                                   {{profile_form.county}}
+                              </div>
+                              <div>
+                                   <label for="last_name" class="block mb-2 text-sm font-medium text-gray-900">Sub County</label>
+                                   {{profile_form.subcounty}}
+                              </div> 
+                         </div>
+                         <div class="mb-6">
+                              <label for="email" class="block mb-2 text-sm font-medium text-gray-900">Profile Picture</label>
+                              {{profile_form.profile_picture}}
+                         </div> 
+                         <button type="submit" class="my-3 text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center">Save</button>
+                    </form>
+
+               </div>
+          </div>
+           
+     </div>
+</section>
+{% endblock %}

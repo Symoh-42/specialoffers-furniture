@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% load humanize %}
+
+{% block title %} | New Arrival{% endblock %}
+
+{% block content %}
+
+<!-- Breadcrumb -->
+<nav class="flex md:mx-28 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50" aria-label="Breadcrumb">
+    <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+                <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">New Arrival</a>
+            </div>
+        </li>
+        
+    </ol>
+</nav>
+
+<!-- MAIN FLYER -->
+<section class="md:mx-28">
+    <img src="{% static 'images/m3.png' %}" class="my-4" alt="">
+</section>
+
+<!-- NEW ARRIVAL CATEGORIES -->
+<section class="md:mx-28 flex bg-white rounded-md shadow-md p-2">
+    <div class="grid grid-cols-3 space-x-2 md:grid-cols-6">
+        <div class="relative hover:translate-x-0.5">
+            <a href="/store/products/sofa"><img src="{% static 'images/1.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-2 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Sofa</p>
+            </div>
+        </div>
+        <div class="relative hover:translate-x-0.5">
+            <a href="/"><img src="{% static 'images/2.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Pool Table</p>
+            </div>
+        </div>
+        <div class="relative hover:translate-x-0.5">
+            <a href="/store/products/home-decor"><img src="{% static 'images/3.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Dining Table</p>
+            </div>
+        </div>
+        <div class="relative hover:translate-x-0.5">
+            <a href="/store/products/outdoor"><img src="{% static 'images/4.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Outdoor Sofa</p>
+            </div>
+        </div>
+        <div class="relative hover:translate-x-0.5">
+            <a href="/store/products/office"><img src="{% static 'images/5.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Office Chair</p>
+            </div>
+        </div>
+        <div class="relative hover:translate-x-0.5">
+            <a href="/store/products/office"><img src="{% static 'images/6.png' %}" class="" alt=""></a>
+            <div class="absolute w-full bottom-0 bg-black bg-opacity-50">
+                <p class="text-center text-sm uppercase text-white">Office Desk</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- VARIOUS SUBCATEGORY -->
+<section class="md:mx-28 mt-4 md:flex space-x-2 bg-white rounded-md shadow-md p-2">
+    <div class="">
+        <a href="/store/products/outdoor"><img src="{% static 'images/12.png' %}" class="hover:translate-x-0.5 hover:shadow-2xl" alt=""></a>
+    </div>
+    <div class="">
+        <a href="/store/products/office"><img src="{% static 'images/11.png' %}" class="hover:translate-x-0.5 hover:shadow-2xl" alt=""></a>
+    </div>
+</section>
+
+{% endblock %}

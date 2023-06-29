@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %} | Invoice{{order.order_number}}{% endblock %}
+
+{% block content %}
+<style>
+     @media print {
+          body * {
+               display: none;
+          }
+          #content, #content * {
+               display: block;
+          }
+     }
+</style>
+
+<div class="container mx-auto lg:px-20" style="margin-top: 20px;">
+     <center><i class="fas fa-check-circle" style="font-size: 72px;margin-bottom: 20px;color: #28A745;"></i></center>
+     <h2 class="text-lg text-center font-semibold my-2">Payment Successful</h2>
+     <div class="mx-auto w-40 text-center">
+          <a href="{% url 'home' %}" class="flex justify-items-center text-white bg-green-500 border-0 py-2 px-10 focus:outline-none hover:bg-green-600 rounded">Shop More</a>
+     </div>
+ </div>
+<section id="content" class="md:mx-24 lg:px-20 mt-3 bg-white border rounded shadow-md">
+     <h4 class="text-lg text-center font-semibold">Your Invoice</h4>
+     <hr class="my-3">
+
+     <div class="flex justify-between">
+          <div class="">
+               <h4 class="text-lg font-semibold text-gray-700">BILL FROM:</h4>
+               <h4 class="text-sm font-semibold text-gray-700">Sips Solutions.</h4>
+               <h4 class="text-sm font-semibold text-gray-700">Location ,</h4>
+               <h4 class="text-sm font-semibold text-gray-700">Kenya.</h4>
+               <h4 class="text-sm font-semibold text-gray-700">sipssolutions@gmail.com.</h4>
+          </div>
+          <div class="hidden lg:block">
+               <img src="{% static 'images/black_logo.png'%}" alt="" class="h-30 w-40">
+          </div>
+     </div>
+     <hr class="my-3">
+     <div class="lg:flex justify-between mb-6">
+          <div class="">
+               <h4 class="text-lg font-semibold text-gray-700">BILL TO:</h4>
+               <h4 class="text-sm font-semibold text-gray-700">{{order.full_name}}</h4>
+               <h4 class="text-sm font-semibold text-gray-700">{{order.county}}, {{order.subcounty}}</h4>
+               <h4 class="text-sm font-semibold text-gray-700">Kenya</h4>
+               <h4 class="text-sm font-semibold text-gray-700">{{order.email}}</h4>
+          </div>
+          <hr class="my-6">
+          <div class="">
+               <h4 class="text-sm font-semibold text-gray-700">INVOICE # {{order.order_number}}</h4>
+               <h4 class="text-sm font-semibold text-gray-700">INVOICE DATE {{order.created_at}}</h4>
+               <h4 class="text-sm font-semibold text-gray-700">AMOUNT DUE {{order.order_total}}</h4>
+               <h4 class="text-sm font-semibold text-gray-700">STATUS: {{payment.status}}</h4>
+          </div>
+     </div>
+     <hr class="my-6">
+     <div class="flex border-b">
+          <p class="text-sm font-semibold w-1/5 text-center">Item</p>
+          <p class="text-sm font-semibold w-1/5 text-center">Description</p>
+          <p class="text-sm font-semibold w-1/5 text-center">Quantity</p>
+          <p class="text-sm font-semibold w-1/5 text-center">Total Cost</p>
+     </div>
+     {% for item in ordered_products %}
+     <div class="flex justify-content">
+                        
+          <h2 class="text-xs font-semibold mt-4 w-1/5 text-center">{{item.product.product_name | truncatechars:25}}</h2>
+
+          <h4 class="text-xs font-semibold mt-4 w-1/5 text-center">
+          {% for i in item.variations.all %}
+               {{ i.variation_category | capfirst }} : {{ i.variation_value | capfirst }} <br>
+          {% endfor %}
+          </h4>
+          <h4 class="text-xs font-semibold mt-4 w-1/5 text-center">{{item.quantity}}</h4>
+          <h4 class="text-xs font-semibold mt-4 w-1/5 text-center">KSH {{item.product_price}}</h4>
+     </div>
+     {% endfor %}
+     <hr class="my-6">
+     <div class="lg:flex justify-end">
+          <div class="flex flex-row">
+               <div class="">
+                    <h4 class="text-sm font-semibold text-gray-700">Sub Total</h4>
+                    <h4 class="text-sm font-semibold text-gray-700">Shipping</h4>
+                    <h4 class="text-sm font-semibold text-gray-700">Grand Total</h4>
+                    <!-- <h4 class="text-sm px-4 font-bold text-gray-700">:KSH{{subtotal}}</h4> -->
+               </div>
+               <div class="">
+                    <h4 class="text-sm px-4 font-bold text-gray-700">:KSH{{subtotal}}</h4>
+                    <!-- <h4 class="text-sm font-semibold text-gray-700">Shipping</h4> -->
+                    <h4 class="text-sm px-4 font-bold text-gray-700">:KSH{{order.shipping}}</h4>
+                    <h4 class="text-sm px-4 font-bold text-gray-700">:KSH{{order.order_total}}</h4>
+               </div>
+               <!-- <div class="flex">
+                    <h4 class="text-sm font-semibold text-gray-700">Grand Total</h4>
+                    <h4 class="text-sm px-4 font-bold text-gray-700">:KSH{{order.order_total}}</h4>
+               </div> -->
+          </div>
+          
+     </div>
+     <div class="text-md text-center font-semibold text-gray-700 mt-4 mb-8">
+          <p>Thank you for shopping with us!</p>
+          <button id="print" class="flex justify-items-center text-white bg-green-500 border-0 py-2 px-10 focus:outline-none hover:bg-green-600 rounded">Print this page</button>
+     </div>
+     <!-- <hr> -->
+</section>
+<script>
+     const printBtn = document.getElementById('print');
+
+     printBtn.addEventListener('click', function(){
+          print();
+     })
+</script>
+{% endblock %}

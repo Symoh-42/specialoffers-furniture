@@ -1,0 +1,52 @@
+<div class="bg-white shadow-md rounded-lg flex flex-col">
+    
+    <a href="{% url 'userpage' %}" 
+    {% if 'userpage' in request.path %}
+    class="bg-gray-300 text-sm px-5 py-4 hover:font-medium"
+    {% else %}
+    class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"
+    {% endif %}
+    ><i class="fa-regular fa-user pr-4"></i>My Account</a>
+    
+    <a href="{% url 'user_orders' %}"
+    {% if 'user_orders' in request.path %}
+    class="bg-gray-300 text-sm px-5 py-4 hover:font-medium"
+    {% else %}
+    class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"
+    {% endif %}
+    ><i class="fa-solid fa-bag-shopping pr-4"></i>Orders</a>
+
+    <a href="{% url 'wishlist' %}" 
+    {% if 'wishlist' in request.path %}
+    class="bg-gray-300 text-sm px-5 py-4 hover:font-medium"
+    {% else %}
+    class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"
+    {% endif %}
+    ><i class="fa-regular fa-heart pr-4"></i>Saved Items</a>
+
+    <a href="#" class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"><i class="fa-regular fa-clock pr-4"></i>Recently Reviewed
+    </a>
+    <hr class="p-1">
+    
+    <a href="{% url 'edit_profile' %}" 
+    {% if 'edit_profile' in request.path %}
+    class="bg-gray-300 text-sm px-5 py-4 hover:font-medium"
+    {% else %}
+    class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"
+    {% endif %}>Account Management</a>
+
+    <a href="#" class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium">Address & Location</a>
+
+    <a href="{% url 'newsletter' %}"
+    {% if 'newsletter' in request.path %}
+    class="bg-gray-300 text-sm px-5 py-4 hover:font-medium"
+    {% else %}
+    class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium"
+    {% endif %}>Newsletter Preferences</a>
+
+    <a href="#" class="text-sm px-5 py-4 hover:bg-gray-100 hover:font-medium">Close Account
+    </a>
+    <hr class="p-1">
+
+    <a href="{% url 'logout' %}" class="my-3 font-semibold uppercase text-center hover:font-bold hover:text-red-700">Logout</a>
+</div>

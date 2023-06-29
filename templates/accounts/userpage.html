@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Account Overview {% endblock %}
+
+{% block content %}
+<!-- USERPAGE -->
+<section class="md:mx-24 py-2">
+    <div class="md:flex md:space-x-4 md:space-y-0 space-y-4">
+        <div class="md:w-1/4">
+             {% include 'partials/_dashboard_sidebar.html' %}
+        </div>
+
+        <div class="bg-white shadow-md rounded-lg md:w-3/4">
+            <h4 class="text-lg font-semibold px-5 py-4 uppercase">Account Overview</h4>
+            <hr class="py-2">
+
+            <div class="md:grid md:grid-cols-2 space-y-4 md:space-y-0">
+                <div class="shadow-md rounded-lg mx-3">
+                    <div class="">
+                        <h6 class="text-sm font-semibold px-4 py-2">ACCOUNT DETAILS</h6>
+                        <hr class="py-2">
+                        <P class="text-sm px-4 py-2">Logged in as: {{user.first_name}} {{user.last_name}}</P>
+                        <P class="text-sm px-4 py-2">Your Email Address: {{user.email}}</P>
+                        <P class="text-sm px-4 py-2">Your Phone Number: {{user.phone_number}}</P>
+                    </div>
+                </div>
+                <div class="shadow-md rounded-lg mx-3">
+                    <div class="">
+                        <h6 class="text-sm font-semibold px-4 py-2">LOCATION & ADDRESS DETAILS</h6>
+                        <hr class="py-2">
+                        <P class="text-sm px-4 py-2">Your default Location is:</P>
+                        <P class="text-sm px-4 py-2">Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatibus, culpa?</P>
+                        <a href="#" class="mx-2 py-2 px-2 text-blue-400 rounded hover:bg-blue-200">ADD DEFAULT LOCATION & ADDRESS</a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="md:grid md:grid-cols-2 py-2 my-4">
+                <div class="shadow-md rounded-lg mx-3 mb-2">
+                    <h6 class="text-sm font-semibold px-4 py-2">Total Orders </h6>
+                    <hr class="py-2">
+                    <p class="text-center text-sm px-4 py-2">{{orders_count}}</p>
+                    <a href="{% url 'user_orders'%}" class="text-center mx-2 my-4 px-2 text-blue-400 rounded hover:bg-blue-200">View Your Orders</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+{% endblock %}

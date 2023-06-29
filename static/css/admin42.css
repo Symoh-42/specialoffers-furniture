@@ -1,0 +1,15 @@
+#header {
+     background: #3ca32f;
+     color: #fff;
+}
+#header h1 {
+     color: #fff;
+}
+div.breadcrumbs {
+     background: #9cd3ae;
+     color: #fff;
+}
+.module h2, .module caption, .inline-group h2{
+     background: #d3c99c;
+     color: #fff;
+}

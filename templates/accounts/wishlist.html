@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | Saved Items {% endblock %}
+
+{% block content %}
+<!-- USERPAGE -->
+<section class="md:mx-24 py-2">
+    <div class="md:flex md:space-x-4 md:space-y-0 space-y-4">
+          <div class="md:w-1/4">
+               {% include 'partials/_dashboard_sidebar.html' %}
+          </div>
+          <div class="bg-white shadow-md rounded-lg md:w-3/4">
+               <h4 class="text-lg font-semibold px-5 py-4 uppercase">Your Wishlist</h4>
+               <hr class="py-2">
+               
+               <div class="md:mx-20">
+                    <!-- <h2 class="my-2 font-semibold text-center text-md underline underline-offset-8">Items</h2> -->
+                    <div class="flex space-x-8 px-2 md:px-0">
+                         <p class="w-1/5 py-2 text-gray-700 border-b-2 border-gray-400 whitespace-nowrap cursor-base focus:outline-none">Image</p>
+                         <p class="w-1/5 py-2 text-gray-700 border-b-2 border-gray-400 whitespace-nowrap cursor-base focus:outline-none">Name</p>
+                         <p class="w-1/5 py-2 text-gray-700 border-b-2 border-gray-400 whitespace-nowrap cursor-base focus:outline-none">Price</p>
+                         <p class="w-1/5 py-2 text-gray-700 border-b-2 border-gray-400 whitespace-nowrap cursor-base focus:outline-none">Quantity</p>
+                    </div>
+                    
+                    {% for item in wishItems %}
+                    <div class="flex space-x-8 my-2">
+                         <div class="w-1/5 h-25">
+                              <img src="{{ item.product.photo_main.url }}" alt="" >
+                              
+                              <form action="{% url 'deleteFromWishlist' %}" method="POST">
+                                   {% csrf_token %}
+                                   <i class="fa-solid fa-bucket"></i> 
+                                   <input type="hidden" name="item-id" value="{{ item.id }}">
+                                   <input type="submit" value="Remove">
+                              </form>
+                         </div>
+                         
+     
+                         <h4 class="text-sm font-semibold mt-8 w-1/5 text-center">{{ item.product.product_name }}</h4>
+                         <h4 class="text-sm font-semibold mt-8 w-1/5 text-center">Each {{ item.product.price }}</h4>
+                         <h4 class="text-sm font-semibold mt-8 w-1/5 text-center">{{ item.quantity }}</h4>
+                    
+                    </div>
+                    {% endfor %}
+                    
+               </div>
+          </div>
+     </div>
+</section>
+{% endblock %}

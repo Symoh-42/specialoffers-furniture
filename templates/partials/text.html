@@ -1,0 +1,129 @@
+<div class="bg-gradient-to-r from-white via-gray-500 to-gray-900 shadow-md hidden lg:block relative">
+    <div class="nav container mx-auto pt-2">
+        <div class="flex md:mx-14 justify-between items-center"> 
+            <div class="flex p-3">
+                
+                
+                
+            </div>
+            <!-- Socials -->
+            <div class="hidden md:flex space-x-2">
+                
+                {% for social in social_urls %}
+                    <a href="{{ social.url }}" target="_blank"><i class="text-white hover:text-red-400 fa-brands fa-{{ social.name }}"></i></a>
+                {% endfor %}
+            </div>
+            
+              
+            <div class="text-white flex relative pr-4">
+
+                <div>
+                    {% if user.id is None %}
+                    <p
+                        {% if 'login' in request.path %}
+                        class = "text-red-400"
+                        {% else %}
+                        class = "text-white hover:text-red-400"
+                        {% endif %}
+                    >
+                    <a href="{% url 'login' %}"><i class="fa-solid fa-arrow-right-to-bracket px-2"></i>Login</a></p>
+
+                    {% else %}
+                    
+                    <button id="menu-btn" class="px-2 uppercase">
+                        <i class="fa-solid fa-user pr-1"></i>
+                        Hi, {{ user.first_name }}!
+                        <i class="pl-1 fa-solid fa-chevron-down"></i>
+                    </button>
+                    <div id="dropdown" class="absolute bg-gray-200 hidden z-50 flex-col rounded w-32">
+                        
+                        <a href="{% url 'userpage' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-user pr-1"></i>My Account</a>
+                        <a href="{% url 'user_orders' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-bag-shopping pr-1"></i>Orders</a>
+                        <a href="{% url 'wishlist' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-heart pr-1"></i>Saved Items</a>
+
+                        <a href="{% url 'logout' %}" class="border-t-2 border-black mt-3 text-sm text-black uppercase p-1 text-center hover:text-red-400 hover:font-medium">Logout</a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <!-- THE DASHBOARD BUTTON -->
+                {% if user.is_admin %}
+                <a href="/admin" target="_blank" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium text-sm px-4 rounded py-1 mr-2 mb-2">Dashboard</a>
+                {% endif %}
+
+                <!-- CART -->
+                <a href="{% url 'cart' %}" class="hover:text-red-400">
+                    <span class="hidden md:inline-block">Cart </span>
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </a>
+                <span class="bg-red-700 text-xs font-bold rounded-full p-1 absolute -top-4 -right-3 mr-4 mt-2">
+                    <span id="cartCount" class="text-white">{{ cart_count }}</span>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<nav class="px-6 bg-gradient-to-r from-white via-gray-500 to-gray-900 hidden lg:block relative">
+    <div class="flex justify-between">
+        <!-- Call Us -->
+        <div class="">
+
+        </div>
+
+        <!-- Socials -->
+        <div class="hidden md:flex space-x-2">
+            
+            {% for social in social_urls %}
+                <a href="{{ social.url }}" target="_blank"><i class="text-white hover:text-red-400 fa-brands fa-{{ social.name }}"></i></a>
+            {% endfor %}
+        </div>
+
+        <div class="text-white flex relative pr-4">
+
+            <div>
+                {% if user.id is None %}
+                <p
+                    {% if 'login' in request.path %}
+                    class = "text-red-400"
+                    {% else %}
+                    class = "text-white hover:text-red-400"
+                    {% endif %}
+                >
+                <a href="{% url 'login' %}"><i class="fa-solid fa-arrow-right-to-bracket px-2"></i>Login</a></p>
+
+                {% else %}
+                
+                <button id="menu-btn" class="px-2 uppercase">
+                    <i class="fa-solid fa-user pr-1"></i>
+                    Hi, {{ user.first_name }}!
+                    <i class="pl-1 fa-solid fa-chevron-down"></i>
+                </button>
+                <div id="dropdown" class="absolute bg-gray-200 hidden z-50 flex-col rounded">
+                    
+                    <a href="{% url 'userpage' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-user pr-1"></i>My Account</a>
+                    <a href="{% url 'user_orders' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-bag-shopping pr-1"></i>Orders</a>
+                    <a href="{% url 'wishlist' %}" class="text-black text-sm p-1 hover:bg-red-400"><i class="fa-solid fa-heart pr-1"></i>Saved Items</a>
+
+                    <a href="{% url 'logout' %}" class="border-t-2 border-black mt-3 text-sm text-black uppercase p-1 text-center hover:text-red-400 hover:font-medium">Logout</a>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- THE DASHBOARD BUTTON -->
+            {% if user.is_admin %}
+            <a href="/admin" target="_blank" class="text-gray-900 bg-white border border-gray-300 hover:bg-gray-100 font-medium text-sm px-4 rounded py-1 mr-2 mb-2">Dashboard</a>
+            {% endif %}
+
+            <!-- CART -->
+            <a href="{% url 'cart' %}" class="hover:text-red-400">
+                <span class="hidden md:inline-block">Cart </span>
+                <i class="fa-solid fa-cart-shopping"></i>
+            </a>
+            <span class="bg-red-700 text-xs font-bold rounded-full p-1 absolute -top-4 -right-3 mr-4 mt-2">
+                <span id="cartCount" class="text-white">{{ cart_count }}</span>
+            </span>
+        </div>
+    </div>
+</nav>

@@ -1,0 +1,60 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %} | Top Picks {% endblock %}
+
+{% block content %}
+
+<section class="md:mx-14">
+     <div class="grid grid-cols-2 mt-8 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+
+          {% for boosted in boosted %}
+          <div class="group flex flex-col justify-center md:w-48 max-w-lg mx-auto px-2 py-1 hover:translate-x-0.5 hover:shadow-2xl">
+              <a href="/store/boosted/{{boosted.slug}}">
+                  <img class="object-cover w-full rounded-md h-36 md:h-56" src="{{ boosted.photo_main.url }}" alt="{{ boosted.boosted_slug }}">
+                  {% if boosted.free_delivery %}
+                  <span class="absolute top-1 left- bg-orange-500 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2">
+      
+                  Free Delivery in NBI
+                  </span>
+                  {% endif %}
+                  <h4 class="mt-2 text-sm font-medium text-gray-700">{{ boosted.boosted_name | truncatechars:25 }}</h4>
+                  <p class="text-sm text-black font-semibold">KSH {{ boosted.price | intcomma }}</p>
+                  <div>
+                      <span class="text-sm text-gray-400 line-through">Ksh {{ boosted.discount_price | intcomma }}</span>
+                      <span class="text-xs bg-red-100 p-0.5 rounded">{{ boosted.get_discount_percentage }}%</span>
+                  </div>
+                  <!-- RATING STARS -->
+                  <div class="rating-star">
+                      <span>
+                      <i class="fa fa-star{% if boosted.averageReview < 0.5 %}-o{% elif boosted.averageReview >= 0.5 and boosted.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                      <i class="fa fa-star{% if boosted.averageReview < 1.5 %}-o{% elif boosted.averageReview >= 1.5 and boosted.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                      <i class="fa fa-star{% if boosted.averageReview < 2.5 %}-o{% elif boosted.averageReview >= 2.5 and boosted.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                      <i class="fa fa-star{% if boosted.averageReview < 3.5 %}-o{% elif boosted.averageReview >= 3.5 and boosted.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                      <i class="fa fa-star{% if boosted.averageReview < 4.5 %}-o{% elif boosted.averageReview >= 4.5 and boosted.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                      <span>{{boosted.countReview}} reviews</span>
+                      </span>
+                  </div>
+
+                  
+                  <a href="{% url 'add_cart' boosted.id %}" class="invisible  group-hover:visible flex items-center  justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                      </svg>
+                      <span class="mx-1">Add to cart</span>
+                  </a>
+                  <form action="{% url 'addToWishList' %}" method="POST" class="invisible  group-hover:visible flex items-center  justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-500 rounded-md hover:bg-orange-700 focus:outline-none focus:bg-orange-700">
+                      
+                      {% csrf_token %}
+                      <i class="fa-regular fa-heart pr-4"></i>
+                      <input type="hidden" name="boosted-id" value="{{ boosted.id }}">
+                      <input type="submit" class="mx-1" value="Save Item">
+                  </form>
+              </a>
+          </div>
+          {% endfor %} 
+     </div>
+</section>
+{% endblock %}

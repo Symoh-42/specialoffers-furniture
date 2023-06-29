@@ -1,0 +1,126 @@
+<!-- PRODUCT VIEWED -->
+<section>
+     <div class="">
+          <div class="md:flex space-x-1 md:space-x-2">
+               {% if product %}
+
+               
+               {% endif %}
+
+               <div class="">
+                    
+               </div>
+          
+          </div>
+          
+          
+     </div>
+</section>
+
+<!-- ALSO PRODUCT VIEWED -->
+<section class="bg-white shadow-md rounded-lg">
+     <section class="">
+          <div class="container mx-auto flex justify-between font-semibold">
+          <div class="flex">
+               <h3 class="border-b font-light font-mono text-2xl px-2">Customers also viewed this</h3>
+          </div>
+          </div>
+          
+     </section>
+     
+     <section class="container mx-auto mb-5">
+     {% if related %}
+          
+          <div class="grid grid-cols-6 owl-carousel topPick bg-white rounded-b-lg shadow-md">
+          {% for related_product in related %}
+          
+          <a href="/store/product/{{related_product.slug}}" class="flex flex-col justify-center w-full px-2 max-w-lg mx-auto hover:translate-x-0.5 hover:shadow-2xl my-3">
+               <img src="{{ related_product.photo_main.url }}" alt="categories" class="w-20 h-28 rounded-md object-cover px-2"/>
+               <p class="text-sm lg:text-md font-semibold leading-5 lg:leading-6 text-gray-900">{{ related_product.product_name | truncatechars:23 }}</p>
+               <p class="text-sm font-semibold leading-5 lg:leading-6 text-gray-900">Ksh. {{ related_product.price | intcomma }}</p>
+               <span class="line-through text-xs text-gray-600">KSH.{{ related_product.discount_price | intcomma }}</span>
+          </a>
+          <!-- <a href="/product/{{ product.slug }}"> <img class="object-cover w-full rounded-md h-36 md:h-56 xl:h-64" src="{{ product.photo_main.url }}" alt="">
+               <p id="nm{{ product.id }}" class="mt-2 text-xs font-medium text-gray-700">{{ product.product_name | truncatechars:35 }}</p></a> -->
+          {% endfor %}
+     </div>
+
+     {% endif %}
+     </section>
+</section>
+
+</section>
+               {% if orderproduct %}
+               <div class="md:flex my-3"> 
+                    <div class="my-4">
+
+                         <!-- REVIEWS -->
+                         <div class="">
+                              <h5 class="mb-2 px-3 text-2xl font-bold tracking-tight text-gray-900">Write Your Review</h5>
+
+                              <form action="{% url 'submit_review' product.id %}" method="POST" class="rounded-lg shadow-md bg-white px-2">
+                              {% csrf_token %}
+                              
+                                   <div class="mt-4">
+                                   <!-- Rating stars -->
+                                   <label class="text-gray-900 text-md title-font font-medium mb-1">How do you rate this product?</label>
+                                   <br>
+                                   <div class="rate">
+                                        <input type="radio" name="rating" id="rating10" value="5" required /><label for="rating10" title="5"></label>
+                                        <input type="radio" name="rating" id="rating9" value="4.5" required /><label for="rating9" title="4.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating8" value="4" required /><label for="rating8" title="4"></label>
+                                        <input type="radio" name="rating" id="rating7" value="3.5" required /><label for="rating7" title="3.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating6" value="3" required /><label for="rating6" title="3"></label>
+                                        <input type="radio" name="rating" id="rating5" value="2.5" required /><label for="rating5" title="2.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating4" value="2" required /><label for="rating4" title="2"></label>
+                                        <input type="radio" name="rating" id="rating3" value="1.5" required /><label for="rating3" title="1.5" class="half"></label>
+                                        <input type="radio" name="rating" id="rating2" value="1" required /><label for="rating2" title="1"></label>
+                                        <input type="radio" name="rating" id="rating1" value="0.5" required /><label for="rating1" title="0.5" class="half"></label>
+                                   </div>
+                                   <br>
+                                   <div class="text-gray-900 text-md title-font font-medium mb-1">Review Title:</div>
+                                   
+                                   <input type="text" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" name="subject">
+                                   <br>
+                                   <div class="text-gray-900 text-md title-font font-medium mb-1">Review:</div>
+                                   
+                                   <textarea name="review" rows="4" class="flex items-center w-full px-4 py-3 text-sm border border-gray-300 rounded focus:outline-none focus:ring-1 focus:ring-blue-600"></textarea>
+                                   <br>
+
+                                   {% if user.is_authenticated %}
+                                        
+                                        <input type="submit" value="Submit Review" class="mt-2 rounded-md bg-indigo-500 font-semibold hover:bg-indigo-600 px-2 py-2 text-sm text-white uppercase">
+                                        
+                                        <p>You must be logged in to post a review. <span><a href="{% url 'login' %}">Login now</a></span></p>
+                                   {% endif %}
+                                   </div>
+                                   <!-- MESSAGES -->
+                                   <!-- {% include 'partials/_alerts.html' %} -->
+                              </form>
+                         </div>
+                    </div>
+               </div>
+               {% endif %}
+
+               {% for review in reviews %} 
+                              <ol class="relative border-l border-gray-200">
+                              
+                                   <li class="mb-10 ml-4">
+                                        <!-- <h3 class="text-lg font-semibold text-gray-900">{{review.user.full_name}}</h3> -->
+                                        <div class="absolute w-3 h-3 bg-gray-200 rounded-full mt-1.5 -left-1.5 border border-white"></div>
+                                        <time class="mb-1 text-sm font-normal leading-none text-gray-400">{{review.updated_at}}</time>
+                                        <div class="rating-star">
+                                             <span>
+                                                  <i class="fa fa-star{% if review.rating == 0.5 %}-half-o{% elif review.rating < 1 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 1.5 %}-half-o{% elif review.rating < 2 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 2.5 %}-half-o{% elif review.rating < 3 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 3.5 %}-half-o{% elif review.rating < 4 %}-o {% endif %}" aria-hidden="true"></i>
+                                                  <i class="fa fa-star{% if review.rating == 4.5 %}-half-o{% elif review.rating < 5 %}-o {% endif %}" aria-hidden="true"></i>
+                                             </span>
+                                        </div>
+                                        <h3 class="text-lg font-semibold text-gray-900">{{review.subject}}</h3>
+                                        <p class="mb-4 text-base font-normal text-gray-500">{{review.review}}</p>
+                                   </li>
+                              
+                              </ol>
+                              {% endfor %}

@@ -1,0 +1,294 @@
+{% extends 'base.html' %}
+
+{% load humanize %}
+
+{% block title %} | {{category_slug}}{% endblock %}
+
+{% block content %}
+
+<section class="md:mx-16">
+<!-- Breadcrumb -->
+    <nav class="container mx-auto flex my-2 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-white" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+            Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            <a href="/store/products/{{category_slug}}" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">{{ category_slug }}</a>
+            </div>
+        </li>
+        <li>
+            <div class="flex items-center">
+            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            <a href="/store/products/{{category_slug}}/{{ sub_category_slug }}" class="ml-1 capitalize text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">{{ sub_category_slug }}</a>
+            </div>
+        </li>
+        </ol>
+    </nav>
+
+
+    <!-- New Arrival -->
+    <section class="mb-3">
+        <div class="flex justify-between py-2 bg-blue-400 rounded-t-lg shadow-md">
+            <h1 class="sm:text-sm md:text-xl pl-6">Latest</h1>
+            <a href="{% url 'arrival' %}"><h1 class="sm:text-sm md:text-xl pr-6">View All</h1></a>
+        </div>
+        <div class="grid grid-cols-6 owl-carousel topPick bg-white rounded-b-lg shadow-md">
+            {% for product in new_arrival %}
+            <div class="item mb-2">
+                <div class="flex flex-col justify-center w-full px-2 max-w-lg mx-auto hover:translate-x-0.5 hover:shadow-2xl mt-3">
+                    <a href="/store/product/{{product.slug}}"><img class="relative object-cover w-40 h-40 rounded-md" src="{{ product.photo_main.url }}" alt="T-Shirt"></a>
+                    {% if product.free_delivery %}
+                        <span class="absolute top-1 right- bg-orange-500 text-gray-800 text-xs inline-flex items-center px-2 py-0.5 rounded mr-2">
+                            Free Delivery in NBI
+                        </span>
+                    {% endif %}
+                    <h4 class="text-xs text-gray-600 hover:underline">{{ product.product_name | truncatechars:35 }}</h4>
+                    <h4 class="text-sm font-medium text-gray-600">KSH.{{ product.price | intcomma }}</h4>
+                    <div>
+                        <span class="line-through text-xs text-gray-600">KSH.{{ product.discount_price | intcomma }}</span>
+                    
+                    </div>
+                    
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+    </section>
+
+    <!-- MARKETING IMAGES -->
+    {% if marketing_on_categories %}
+    <section class="bg-black p-2 rounded-lg shadow-md">
+        
+        <div class="owl-carousel topSales grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3">
+            {% for marketing_on_category in marketing_on_categories %}
+            <img src="{{ marketing_on_category.image.url }}" class="rounded-lg hover:translate-x-0.5" alt="">
+            {% endfor %}
+        </div>
+        
+    </section>
+    {% endif %}
+
+    
+
+    <!-- MOST VIEWED -->
+    <section class="">
+        <div class="flex justify-between py-2 bg-blue-400 rounded-t-lg shadow-md">
+            <h1 class="sm:text-sm md:text-xl pl-6">Top Trends</h1>
+            <a href="{% url 'mostViewed' %}"><h1 class="sm:text-sm md:text-xl pr-6">View All</h1></a>
+        </div>
+        <div class="grid grid-cols-6 owl-carousel topPick bg-white rounded-b-lg shadow-md">
+            {% for product in most_viewed %}
+            <div class="item mb-3">
+                <div class="flex flex-col justify-center w-full px-2 max-w-lg mx-auto hover:translate-x-0.5 hover:shadow-2xl mt-3">
+                    <a href="/store/product/{{product.slug}}"><img class="relative object-cover w-40 h-40 rounded-md" src="{{ product.photo_main.url }}" alt="T-Shirt"></a>
+                    {% if product.free_delivery %}
+                        <span class="absolute top-1 right- bg-orange-500 text-gray-800 text-xs inline-flex items-center px-2 py-0.5 rounded mr-2">
+                            Free Delivery in NBI
+                        </span>
+                    {% endif %}
+                    <h4 class="text-xs text-gray-600 hover:underline">{{ product.product_name | truncatechars:35 }}</h4>
+                    <h4 class="text-sm font-medium text-gray-600">KSH.{{ product.price | intcomma }}</h4>
+                    
+                    <span class="line-through text-xs text-gray-600">KSH.{{ product.discount_price | intcomma }}</span>
+                    
+                    
+                    
+                </div>
+            </div>
+            {% endfor%}
+        </div>
+    </section>
+
+    
+    
+    <!-- PRODUCTS -->
+    
+    <section class="bg-white mt-3 rounded-lg shadow-md">
+        <div class="container lg:px-6 lg:py-8 mx-auto">
+            <div class="lg:flex lg:-mx-2">
+
+                <button data-collapse-toggle="navbar-def" type="button" class="inline-flex items-center p-2 ml-3 text-sm text-gray-500 rounded-lg md:hidden hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-200" aria-controls="navbar-default" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <svg class="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns=""><path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd"></path></svg>
+                </button>
+
+                <div class="hidden md:block space-y-3 lg:w-1/5 lg:px-2 lg:space-y-4 px-2 py-1 md:px-0" id="navbar-def">
+                    
+                    <h3 class="border-t mb-4 font-semibold text-gray-900">SUB CATEGORIES</h3>
+                    {% for category in sub_categories %}
+                    <a
+                        {% if 'store/products/{{category_slug}}/{{category.slug}}' in request.path %}
+                            class = "block font-medium text-red-600"
+                            {% else %}
+                            class="block font-medium text-black hover:text-blue-500"
+                        {% endif %} 
+                    href="/store/products/{{category_slug}}/{{ category.slug }}">{{ category.sub_category_name }}</a>
+                    {% endfor %}
+                    
+                    <!-- SIZES
+                    <h3 class="border-t border-b mb-4 font-semibold text-gray-900">SIZE</h3>
+                    <ul class="w-48 text-sm font-medium text-gray-900 bg-white rounded-lg">
+                        <li class="w-full rounded-t-lg border-b border-gray-200">
+                            <div class="flex items-center">
+                                <input id="vue-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500">
+                                <label for="vue-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900">S</label>
+                            </div>
+                        </li>
+                        <li class="w-full rounded-t-lg border-b border-gray-200">
+                            <div class="flex items-center">
+                                <input id="react-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500">
+                                <label for="react-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900">M</label>
+                            </div>
+                        </li>
+                        <li class="w-full rounded-t-lg border-b border-gray-200">
+                            <div class="flex items-center">
+                                <input id="angular-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500">
+                                <label for="angular-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900">L</label>
+                            </div>
+                        </li>
+                        <li class="w-full rounded-t-lg border-b border-gray-200">
+                            <div class="flex items-center">
+                                <input id="laravel-checkbox" type="checkbox" value="" class="w-4 h-4 text-blue-600 bg-gray-100 rounded border-gray-300 focus:ring-blue-500">
+                                <label for="laravel-checkbox" class="py-3 ml-2 w-full text-sm font-medium text-gray-900">XL</label>
+                            </div>
+                        </li>
+                    </ul> -->
+
+                </div>
+
+                <div class="mt-6 lg:mt-0 lg:px-2 lg:w-4/5 ">
+                    <div class="flex items-center justify-between text-sm tracking-widest px-2 py-1 md:px-0  uppercase">
+                        <p class="text-gray-500">{{products | length}} Items</p>
+                        <div class="flex items-center">
+                            <p class="text-gray-500">Sort</p>
+                            <select class="font-medium text-gray-700 bg-transparent focus:outline-none">
+                                <option value="#">Recommended</option>
+                                <option value="#">Size</option>
+                                <option value="#">Price</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="grid grid-cols-2 mt-8 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                        {% if products %}
+                        {% for product in product_list %}
+                        <div class="group flex flex-col justify-center md:w-48 max-w-lg mx-auto px-2 py-1 hover:translate-x-0.5 hover:shadow-2xl">
+                            <a href="/store/product/{{product.slug}}">
+                                <img class="object-cover w-full rounded-md h-36 md:h-56" src="{{ product.photo_main.url }}" alt="{{ product.product_slug }}">
+                                {% if product.free_delivery %}
+                                <span class="absolute top-1 left- bg-orange-500 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2">
+                    
+                                Free Delivery in NBI
+                                </span>
+                                {% endif %}
+                                <h4 class="mt-2 text-sm font-medium text-gray-700">{{ product.product_name | truncatechars:25 }}</h4>
+                                <p class="text-sm text-black font-semibold">KSH {{ product.price | intcomma }}</p>
+                                <div>
+                                    <span class="text-sm text-gray-400 line-through">Ksh {{ product.discount_price | intcomma }}</span>
+                                    <span class="text-xs bg-red-100 p-0.5 rounded">{{ product.get_discount_percentage }}%</span>
+                                </div>
+                                <!-- RATING STARS -->
+                                <div class="rating-star">
+                                    <span>
+                                    <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                                    <span>{{product.countReview}} reviews</span>
+                                    </span>
+                                </div>
+                                </a>
+                                <div class="" id="id{{product.id}}">
+                                    <button type="button" onclick="addCart('{{product.id}}', this)" class="invisible w-full group-hover:visible flex items-center justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                        <span class="mx-1">Add to cart</span>
+                                    </button>
+                                
+                                    <a href="{% url 'cart' %}" class="invisible group-hover:visible flex visually-hidden items-center w-full justify-center px-1 py-2 mt-2 font-medium text-white capitalize transition-colors duration-200 transform bg-red-800 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700">
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                                            <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                                        </svg>
+                                        <span class="mx-1">Checkout</span>
+                                    </a>
+                               </div>
+                                <form action="{% url 'addToWishList' %}" method="POST" class="invisible  group-hover:visible flex items-center  justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-500 rounded-md hover:bg-orange-700 focus:outline-none focus:bg-orange-700">
+                                    
+                                    {% csrf_token %}
+                                    <i class="fa-regular fa-heart pr-4"></i>
+                                    <input type="hidden" name="product-id" value="{{ product.id }}">
+                                    <input type="submit" class="mx-1" value="Save Item">
+                                </form>
+                            </a>
+                        </div>
+                        {% endfor %} 
+                        {% else %}
+                            <div class="container mx-auto">
+                                <p>No Products Available</p>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Pagination  -->
+        <div class="flex flex-col items-center">
+            <!-- Help text -->
+            <span class="text-sm text-gray-700">
+                Showing Page <span class="font-semibold text-gray-900">{{ product_list.number }}</span> to <span class="font-semibold text-gray-900">{{ product_list.paginator.num_pages }}</span> of <span class="font-semibold text-gray-900">{{products | length}}</span> Entries
+            </span>
+
+            <!-- Buttons -->
+            <div class="inline-flex mt-2 xs:mt-0">
+                {% if product_list.has_previous %}
+                <a href="?page={{ product_list.previous_page_number }}">
+                    <button class="py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900">
+                        Prev
+                    </button>
+                </a>
+                {% endif %}
+                {% if product_list.has_next %}
+                <a href="?page={{ product_list.next_page_number }}">
+                    <button class="py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-r border-0 border-l border-gray-700 hover:bg-gray-900">
+                        Next
+                    </button>
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+</section>
+<script>
+    function addCart(productID, btn){
+        var x = $(btn).parent().attr('id')
+        console.log(x)
+
+        var cartUrl = "{% url 'cart' %}"
+        $.ajax({
+            url:'/cart/add_cart/'+productID,
+            success:function(response){
+                
+                $('#'+x+' button').addClass('visually-hidden')
+                $('#'+x+' a').removeClass('visually-hidden')
+                $('#cartCount').html(response.cart_count)
+                Swal.fire({
+                         title: 'Message !',
+                         text: response.message,
+                         showCloseButton: true,
+                         showConfirmButton: false,
+                         footer: '<div class ="space-x-4"><a class="px-2 py-2 my-4 font-medium text-white capitalize transition-colors duration-200 transform bg-green-800 rounded-md hover:bg-green-700 focus:outline-none focus:bg-green-700" href="/">Continue Shopping</a><a class="px-2 py-2 my-4 font-medium text-white capitalize transition-colors duration-200 transform bg-blue-800 rounded-md hover:bg-blue-700 focus:outline-none focus:bg-blue-700" href="'+cartUrl+'">Proceed to Checkout?</a></div>'
+                    })
+            }
+        })
+    }
+</script>
+{% endblock %}

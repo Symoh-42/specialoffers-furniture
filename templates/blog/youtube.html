@@ -1,0 +1,134 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block title %} | YouTube Videos {% endblock %}
+
+{% block content %}
+
+<style>
+     .videoWrapper {
+          position: relative;
+          padding-bottom: 56.25%;
+          height: 0;
+     }
+
+     .videoWrapper iframe {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          padding: 1rem;
+     }
+</style>
+
+<!-- Breadcrumb -->
+<nav class="flex md:mx-36 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-gray-50" aria-label="Breadcrumb">
+     <ol class="inline-flex items-center space-x-1 md:space-x-3">
+          <li class="inline-flex items-center">
+               <a href="/blog/mainblog/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+                    Home
+               </a>
+          </li>
+          <li>
+               <div class="flex items-center">
+                    <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                    <a href="{% url 'mainblog' %}" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">Blogs</a>
+               </div>
+          </li>
+          <li>
+          <div class="flex items-center">
+               <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+               <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">YouTube Videos</a>
+          </div>
+          </li>
+     </ol>
+</nav>
+
+<div class="md:flex md:items-center md:justify-center px-2">
+     <section class="md:w-4/5">
+          <div class="md:flex md:space-x-3 ">
+               <div class="md:w-4/6">
+                    {% for youtube_video in youtube_videos %}
+                    
+                         <div class="videoWrapper">
+                              {{ youtube_video.youtube_url | safe}}
+                         </div>
+
+                    {% endfor %}
+               </div>
+
+               <div class="md:w-2/6">
+                    <div class="bg-white mt-4 rounded-md shadow-md">
+                         <!-- SIGN UP FOR NEWSLETTER -->
+                         <div class="mx-auto max-w-screen-md px-2">
+                              <div class="flex space-x-3">
+                                   <img src="{% static 'images/email.png' %}" alt="">
+                                   <h2 class="mt-4 text-lg font-bold tracking-tight text-gray-900 sm:text-lg">Sign up for our newsletter</h2>
+                              </div>
+                              <!-- <p class="mx-auto mb-8 max-w-2xl font-light text-gray-500 md:mb-12 sm:text-xl">Stay up to date with the roadmap progress, announcements and exclusive discounts feel free to sign up with your email.</p> -->
+                              <form method="POST" action="#">
+                                   {% csrf_token %}
+                                   <div class="">
+                                        <div class="space-y-2">
+                                             <div class="relative w-full">
+                                                  <label for="email" class="hidden mb-2 text-sm font-medium text-gray-900">Email address</label>
+                                                  <div class="flex absolute inset-y-0 left-0 items-center pl-3 pointer-events-none">
+                                                       <svg class="w-5 h-5 text-gray-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z"></path><path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z"></path></svg>
+                                                  </div>
+                                                  {{ form.email }}
+                                             </div>
+                                             <div>
+                                                  <button type="submit" class="py-3 mb-3 px-5 w-full text-sm font-medium text-center rounded-lg border cursor-pointer bg-primary-700 border-primary-600 sm:rounded-none hover:bg-primary-800 focus:ring-4 focus:ring-primary-300">Subscribe</button>
+                                             </div>
+                                        </div>
+                                   </div>
+                                   <!-- <div class="mx-auto max-w-screen-sm text-sm text-left text-gray-500 newsletter-form-footer">We care about the protection of your data. <a href="#" class="font-medium text-primary-600 hover:underline">Read our Privacy Policy</a>.</div> -->
+                              </form>
+                         </div>
+                    </div>
+               </div>
+          </div>
+
+          <!-- Pagination  -->
+          
+          <div class="mt-3 flex flex-col items-center">
+               <!-- Help text -->
+               <span class="text-sm text-gray-700">
+               Showing <span class="font-semibold text-gray-900">1</span> to <span class="font-semibold text-gray-900">{{ youtube_videos.number }}</span> of <span class="font-semibold text-gray-900">{{ youtube_videos.paginator.num_pages }}</span> Entries
+               </span>
+               <div class="inline-flex mt-2 xs:mt-0">
+               {% if posts.has_other_pages %}
+                    <!-- Buttons -->
+                    {% if posts.has_previous %}
+                         <a href="?page={{youtube_videos.previous_page_number}}" class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900">
+                              <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                              Prev
+                         </a>
+                         {% else %}
+                         <a disabled class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-l hover:bg-gray-900">
+                              <svg aria-hidden="true" class="mr-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.707 14.707a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l2.293 2.293a1 1 0 010 1.414z" clip-rule="evenodd"></path></svg>
+                              Prev
+                         </a>
+                    {% endif %}
+                    {% if posts.has_next %}
+                         <a href="?page={{youtube_videos.next_page_number}}" class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-r border-0 border-l border-gray-700 hover:bg-gray-900">
+                              Next
+                              <svg aria-hidden="true" class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                         </a>
+                         {% else %}
+                         <a disabled class="inline-flex items-center py-2 px-4 text-sm font-medium text-white bg-gray-800 rounded-r border-0 border-l border-gray-700 hover:bg-gray-900">
+                              Next
+                              <svg aria-hidden="true" class="ml-2 w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd"></path></svg>
+                         </a>
+                    {% endif %}
+
+               {% endif %}
+               </div>
+          </div>
+          
+     </section>
+</div>
+{% endblock %}

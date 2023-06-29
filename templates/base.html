@@ -1,0 +1,242 @@
+{% load static%}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="keywords" content="kitenge-wears">
+    <!-- BOOTSTRAP -->
+    
+    <!-- Fav Icon -->
+    <link href="{% static 'images/favicon-32x32.png'%}" rel="shortcut icon" type="image/x-icon">
+
+    <!-- PayPal Script -->
+    <script src="https://www.paypal.com/sdk/js?client-id=AZsMkbAKsWGowsEGNg5XNnRJ6MtdkS2v1eoHn-8L0CNo_U6_mwNn1jl3Eqm6v1NaKTSYsTmZBN91j1MF&currency=USD"></script>
+    <!-- Font-Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" 
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Flowbite -->
+    <link rel="stylesheet" href="https://unpkg.com/flowbite@1.4.7/dist/flowbite.min.css" />
+    <!-- Owl Corousel -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.css" integrity="sha512-OTcub78R3msOCtY3Tc6FzeDJ8N9qvQn1Ph49ou13xgA9VsH9+LRxoFU6EqLhW4+PKRfU+/HReXmSZXHEkpYoOA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Tw-Tailwind -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/tw-elements/dist/css/index.min.css" />
+    <!-- Tailwind Css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script type="module" src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.esm.js"></script>
+    <!-- MAIN CSS -->
+    <link rel="stylesheet" href="{% static 'css/custom.css'%}">
+    <script nomodule src="https://unpkg.com/ionicons@5.5.2/dist/ionicons/ionicons.js"></script>
+    <!-- jquery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Google Maps JavaScript library -->
+    <script src="https://maps.googleapis.com/maps/api/js?v=3.exp&libraries=places&key=AIzaSyDQxaXL2U7Dj08fH9WSp0ymnAqIZFo8P1A"></script>
+    <title>Sips Solutions{% block title %}{% endblock %}</title>
+</head>
+<body class="mx-2 md:mx-0 bg-gray-100">
+    
+    <!-- Navbar -->
+    {% include 'partials/_navbar.html' %}
+
+    {% block content %} {% endblock %}
+
+    <!-- Footer -->
+    {% include 'partials/_footer.html' %}
+    
+    <!-- Flowbite -->
+    <script src="https://unpkg.com/flowbite@1.5.1/dist/flowbite.js"></script>
+    <!-- Owl Corousel -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+    <!-- Tw-Tailwind -->
+    <script src="https://cdn.jsdelivr.net/npm/tw-elements/dist/js/index.min.js"></script>
+
+    
+    
+    <script>
+        $('.owl-carousel1').owlCarousel({
+            loop:true,
+            margin:12,
+            responsiveClass:true,
+            autoplay:true,
+            dots:false,
+            autoplayTimeout:3000,
+            nav:false,
+            responsive:{
+                0:{
+                    items:2
+                },
+                600:{
+                    items:3
+                },
+                1000:{
+                    items:6
+                }
+            }
+        })
+        $('.owl-carousel11').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayTimeout:4000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:1
+                },
+                1000:{
+                    items:1
+                }
+            }
+        })
+        
+        $('.owl-carouse').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplay:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:4000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:3
+                },
+                1000:{
+                    items:3
+                }
+            }
+        })
+        $('.owl-carous').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:3000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:2
+                },
+                600:{
+                    items:3
+                },
+                1000:{
+                    items:6
+                }
+            }
+        })
+        $('.topSales').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:3000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:2
+                },
+                1000:{
+                    items:3
+                }
+            }
+        })
+        $('.categories').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:3000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:2
+                },
+                1000:{
+                    items:6
+                }
+            }
+        })
+        $('.topPick').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:3000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:1
+                },
+                600:{
+                    items:3
+                },
+                1000:{
+                    items:6
+                }
+            }
+        })
+        $('.owl-carou').owlCarousel({
+            loop:true,
+            margin:10,
+            responsiveClass:true,
+            autoplay:true,
+            //dots:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:4000,
+            //nav:true,
+            responsive:{
+                0:{
+                    items:2
+                },
+                600:{
+                    items:4
+                },
+                1000:{
+                    items:6
+                }
+            }
+        })
+        $('.loop').owlCarousel({
+            items:1,
+            loop:true,
+            autoplayHoverPause:true,
+            autoplayTimeout:4000,
+            center:true,
+            // margin:10,
+            URLhashListener:true,
+            autoplayHoverPause:true,
+            startPosition: 'URLHash'
+        });
+        // const nav = document.querySelector('.nav')
+        // window.addEventListener('scroll', fixNav)
+        </script>
+</body>
+</html>

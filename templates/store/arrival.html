@@ -1,0 +1,92 @@
+{% extends 'base.html' %}
+
+{% load static %}
+{% load humanize %}
+
+{% block title %} | Top Trends {% endblock %}
+
+{% block content %}
+
+<section class="md:mx-14">
+    <!-- Breadcrumb -->
+    <nav class="container mx-auto flex my-2 px-5 py-3 text-gray-700 border border-gray-200 rounded-lg bg-white" aria-label="Breadcrumb">
+        <ol class="inline-flex items-center space-x-1 md:space-x-3">
+        <li class="inline-flex items-center">
+            <a href="/" class="inline-flex items-center text-sm font-medium text-gray-700 hover:text-gray-900">
+            <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"></path></svg>
+            Home
+            </a>
+        </li>
+        <li>
+            <div class="flex items-center">
+            <svg class="w-6 h-6 text-gray-400" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+            <a href="#" class="ml-1 text-sm font-medium text-gray-700 hover:text-gray-900 md:ml-2">Latest Arrival</a>
+            </div>
+        </li>
+        </ol>
+    </nav>
+                 
+     <div class="grid grid-cols-2 mt-8 md:grid-cols-2 lg:grid-cols-4 xl:grid-cols-6">
+          {% if new_arrival %}
+          {% for product in new_arrival %}
+          <div class="group flex flex-col justify-center md:w-48 max-w-lg mx-auto px-2 py-1 hover:translate-x-0.5 hover:shadow-2xl">
+          <a href="/store/product/{{product.slug}}">
+               <img class="object-cover w-full rounded-md h-36 md:h-56" src="{{ product.photo_main.url }}" alt="{{ product.product_slug }}">
+               {% if product.free_delivery %}
+               <span class="absolute top-1 left- bg-orange-500 text-gray-800 text-xs font-medium inline-flex items-center px-2.5 py-0.5 rounded mr-2">
+     
+               Free Delivery in NBI
+               </span>
+               {% endif %}
+               <h4 class="mt-2 text-sm font-medium text-gray-700">{{ product.product_name | truncatechars:25 }}</h4>
+               <p class="text-sm text-black font-semibold">KSH {{ product.price | intcomma }}</p>
+               <div>
+                    <span class="text-sm text-gray-400 line-through">Ksh {{ product.discount_price | intcomma }}</span>
+                    <span class="text-xs bg-red-100 p-0.5 rounded">{{ product.get_discount_percentage }}%</span>
+               </div>
+               <!-- RATING STARS -->
+               <div class="rating-star">
+                    <span>
+                    <i class="fa fa-star{% if product.averageReview < 0.5 %}-o{% elif product.averageReview >= 0.5 and product.averageReview < 1 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 1.5 %}-o{% elif product.averageReview >= 1.5 and product.averageReview < 2 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 2.5 %}-o{% elif product.averageReview >= 2.5 and product.averageReview < 3 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 3.5 %}-o{% elif product.averageReview >= 3.5 and product.averageReview < 4 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <i class="fa fa-star{% if product.averageReview < 4.5 %}-o{% elif product.averageReview >= 4.5 and product.averageReview < 5 %}-half-o {% endif %}" aria-hidden="true"></i>
+                    <span>{{product.countReview}} reviews</span>
+                    </span>
+               </div>
+               </a>
+               <div class="" id="id{{product.id}}">
+                    <button type="button" onclick="addCart('{{product.id}}', this)" class="invisible w-full group-hover:visible flex items-center justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-700 focus:outline-none focus:bg-gray-700">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                         </svg>
+                         <span class="mx-1">Add to cart</span>
+                    </button>
+               
+                    <a href="{% url 'cart' %}" class="invisible group-hover:visible flex visually-hidden items-center w-full justify-center px-1 py-2 mt-2 font-medium text-white capitalize transition-colors duration-200 transform bg-red-800 rounded-md hover:bg-red-700 focus:outline-none focus:bg-red-700">
+                         <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5 mx-1" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M3 1a1 1 0 000 2h1.22l.305 1.222a.997.997 0 00.01.042l1.358 5.43-.893.892C3.74 11.846 4.632 14 6.414 14H15a1 1 0 000-2H6.414l1-1H14a1 1 0 00.894-.553l3-6A1 1 0 0017 3H6.28l-.31-1.243A1 1 0 005 1H3zM16 16.5a1.5 1.5 0 11-3 0 1.5 1.5 0 013 0zM6.5 18a1.5 1.5 0 100-3 1.5 1.5 0 000 3z" />
+                         </svg>
+                         <span class="mx-1">Checkout</span>
+                    </a>
+               </div>
+               <form action="{% url 'addToWishList' %}" method="POST" class="invisible  group-hover:visible flex items-center  justify-center px-2 py-2 mt-2 font-medium tracking-wide text-white capitalize transition-colors duration-200 transform bg-orange-500 rounded-md hover:bg-orange-700 focus:outline-none focus:bg-orange-700">
+                    
+                    {% csrf_token %}
+                    <i class="fa-regular fa-heart pr-4"></i>
+                    <input type="hidden" name="product-id" value="{{ product.id }}">
+                    <input type="submit" class="mx-1" value="Save Item">
+               </form>
+          
+          </div>
+          {% endfor %} 
+          {% else %}
+          <div class="container mx-auto">
+               <p>No Products Available</p>
+          </div>
+          {% endif %}
+     </div>
+     </div>
+</section>
+{% endblock %}
